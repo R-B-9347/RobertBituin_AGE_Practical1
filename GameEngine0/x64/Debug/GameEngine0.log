@@ -1,0 +1,7 @@
+﻿  GraphicsEngine.cpp
+C:\Users\Evene\OneDrive\Desktop\Assesment1_9347_Game_Engine\GameEngine0\GameEngine0\source\GameEngine0\Graphics\GraphicsEngine.cpp(22,2): warning C4551: function call missing argument list
+C:\Users\Evene\OneDrive\Desktop\Assesment1_9347_Game_Engine\GameEngine0\GameEngine0\source\GameEngine0\Graphics\GraphicsEngine.cpp(89,39): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
+  GameEngine0.vcxproj -> C:\Users\Evene\OneDrive\Desktop\Assesment1_9347_Game_Engine\GameEngine0\x64\Debug\GameEngine0.exe
+  C:\Users\Evene\OneDrive\Desktop\Assesment1_9347_Game_Engine\GameEngine0\GameEngine0\lib\glew32.dll
+  C:\Users\Evene\OneDrive\Desktop\Assesment1_9347_Game_Engine\GameEngine0\GameEngine0\lib\SDL2.dll
+          2 file(s) copied.
