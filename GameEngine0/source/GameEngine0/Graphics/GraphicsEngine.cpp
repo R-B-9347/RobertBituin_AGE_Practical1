@@ -1,20 +1,28 @@
 #include"GameEngine0/Graphics/GraphicsEngine.h"
-#include"GameEngine0/Graphics/VertexArrayObject.h"
+#include"GameEngine0/Graphics/Mesh.h"
 #include"GameEngine0/Graphics/ShaderProgram.h"
 #include "GL/glew.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "GameEngine0/Graphics/Texture.h"
 
 GraphicsEngine::GraphicsEngine()
 {
 	SdlWindow = nullptr;
 	SdlGLContext = NULL;
 	bWireframeMode = false;
+	EngineDefaultCam = make_shared<Camera>();
+
 }
 
 GraphicsEngine::~GraphicsEngine()
 {
-	
+	MeshStack.clear();
+
+	Shader = nullptr;
+
+	TextureStack.clear();
+
 	SDL_DestroyWindow(SdlWindow);
 
 	SDL_GL_DeleteContext(SdlGLContext);
@@ -75,6 +83,8 @@ bool GraphicsEngine::initGE(const char* WTitle, bool bFullscreen, int WWidth, in
 		cout << "Glew Fail" << glewGetErrorString(InitGlew) << endl;
 		return false;
 	}
+
+	glEnable(GL_DEPTH_TEST);
 	return true;
 }
 
@@ -88,7 +98,7 @@ void GraphicsEngine::ClearGraphics()
 	//background color
 	glClearColor(0.255,0.192f,0.203f,1.0f);
 	//clear screen
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void GraphicsEngine::Draw()
@@ -96,36 +106,9 @@ void GraphicsEngine::Draw()
 	ClearGraphics();
 
 	HandleWireframeMode(false);
-	GE0uint index = 0;
-	for (VAOptr VAO : VAOs) {
-		Shader->RunShader();
 
-		glm::mat4 transform = glm::mat4(1.0f);
-
-		//Triangle
-		if (index == 0) {
-			transform = glm::translate(transform, glm::vec3(0.5f, 0.0f, 0.0f));
-			transform = glm::scale(transform, glm::vec3(0.4f, 0.4f, 1.0f));
-		}
-		//Square
-		else if (index == 1) {
-			transform = glm::translate(transform, glm::vec3(-0.6f, 0.5f, 0.0f));
-
-			transform = glm::rotate(transform, glm::radians(45.0f), glm::vec3(0.0f, 0.0f, 1.0f));
-
-			transform = glm::scale(transform, glm::vec3(0.5f,0.5f,1.0f));
-		}
-		//Circle (rupies)
-		else if (index == 2) {
-			transform = glm::translate(transform, glm::vec3(-0.5f, -0.5f, 0.0f));
-			transform = glm::scale(transform, glm::vec3(0.7f, 0.7f, 1.0f));
-		}
-
-
-		Shader->SetMat4("transform", transform);
-
-		VAO->Draw();
-		index++;
+	for (MeshPtr LMesh : MeshStack) {
+		LMesh->Draw();
 	}
 
 	PresentGraphics();
@@ -136,20 +119,73 @@ SDL_Window* GraphicsEngine::GetWindow() const
 	return SdlWindow;
 }
 
-void GraphicsEngine::CreateVAO(GeometricShapes Shape)
+MeshPtr GraphicsEngine::CreateSimpleMeshShape(GeometricShapes Shape, Shaderptr MeshShader, TexturePtrStack MeshTextures)
 {
-	VAOptr NewVAO = make_shared<VAO>(Shape);
+	MeshPtr NewMesh = make_shared<Mesh>();
 
-	VAOs.push_back(NewVAO);
+	if (!NewMesh->CreateSimpleShape(Shape, MeshShader, MeshTextures)) {
+		 ;
+	}
+	
+	MeshStack.push_back(NewMesh);
+
+	return NewMesh;
 }
 
-void GraphicsEngine::CreateShader(VFShaderParams ShaderFilePaths)
+Shaderptr GraphicsEngine::CreateShader(VFShaderParams ShaderFilePaths)
 {
-	Shaderptr NewShader = make_shared<ShaderProgram>();
+		Shaderptr NewShader = make_shared<ShaderProgram>();
 
-	NewShader->InitVFShader(ShaderFilePaths);
+		NewShader->InitVFShader(ShaderFilePaths);
 
-	Shader = NewShader;
+		Shader = NewShader;
+
+		return NewShader;
+}
+
+TexturePtr GraphicsEngine::CreateTexture(const char* FilePath)
+{
+	TexturePtr NewTexture = nullptr;
+
+	for (TexturePtr TestTexture : TextureStack) {
+		if (TestTexture->GetFilePath() == FilePath) {
+			NewTexture = TestTexture;
+			cout << "Found Texture assigning" << endl;
+			break;
+		}
+	}
+	if (NewTexture == nullptr) {
+		cout << "creating New Texture" << endl;
+		NewTexture = make_shared<Texture>();
+
+		if (NewTexture->CreateTextureFromFilePath(FilePath)) {
+			cout << NewTexture->GetID() << " success added Texture to stack" << endl;
+
+			TextureStack.push_back(NewTexture);
+		}
+	}
+
+	return NewTexture;
+}
+
+void GraphicsEngine::ApplyScreenTransformations(Shaderptr Shader)
+{
+	float FOV = EngineDefaultCam->GetCameraData().FOV;
+	Vector3 ViewPosition = EngineDefaultCam->GetTransforms().Location;
+	
+	int WWidth, WHeight = 0;
+
+	SDL_GetWindowSize(SdlWindow, &WWidth, &WHeight);
+	float AR = static_cast<float>(WWidth) / static_cast<float>(max(WHeight, 1));
+	
+	glm::mat4 view = glm::mat4(1.0f);
+	glm::mat4 projection = glm::mat4(1.0f);
+
+	view = EngineDefaultCam->GetViewMatrix();
+	projection = glm::perspective(glm::radians(FOV), AR, EngineDefaultCam->GetCameraData().NearClip, EngineDefaultCam->GetCameraData().Farclip);
+
+	Shader->SetMat4("view", view);
+	Shader->SetMat4("projection", projection);
 }
 
 void GraphicsEngine::HandleWireframeMode(bool bShowWireframeMode)

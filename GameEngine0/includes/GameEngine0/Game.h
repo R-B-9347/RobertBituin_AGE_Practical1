@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 
+class Input;
 
 class Game {
 public:
@@ -12,6 +13,14 @@ public:
 
 	//Game Start
 	void Start(const char* WTitle, bool bFullscreen, int WWidth, int WHeight);
+
+	double GetDeltaTime() { return DeltaTime; }
+
+	float GetFDeltaTime() { return static_cast <float>(DeltaTime); }
+
+	GEptr GetGraphicsEngine() { return Graphics; }
+
+	void CloseApp() { bIsGameOver = true; }
 private:
 	Game();
 	~Game();
@@ -35,4 +44,13 @@ private:
 	bool bIsGameOver;
 
 	GEptr Graphics;
+
+	TexturePtr DefaultTexture;
+
+	double DeltaTime;
+
+	Input* GameInput;
+
+	MeshPtr Tri;
+	MeshPtr Poly;
 };

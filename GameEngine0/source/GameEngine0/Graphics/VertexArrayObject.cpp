@@ -25,6 +25,11 @@ VertexArrayObject::VertexArrayObject(GeometricShapes ChosenShape)
 		ChosenPosition = FreePositions;
 		ChosenIndex = FreeIndex;
 		break;
+	case GeometricShapes::Cube:
+		ChosenPosition = CubePositions;
+		ChosenIndex = CubeIndicies;
+		break;
+
 	default:
 		break;
 	}
@@ -49,7 +54,7 @@ VertexArrayObject::VertexArrayObject(GeometricShapes ChosenShape)
 		0,    //first data set
 		3,    //how many number in matrix to make triangle
 		GL_FLOAT,GL_FALSE,
-		sizeof(float) * 6,
+		sizeof(float) * 8,
 		(void*)0
 	);
 
@@ -59,11 +64,21 @@ VertexArrayObject::VertexArrayObject(GeometricShapes ChosenShape)
 		1,
 		3,
 		GL_FLOAT, GL_FALSE,
-		sizeof(float) * 6,
+		sizeof(float) * 8,
 		(void*)(3 * sizeof(float))
 	);
 
 	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(
+		2,
+		2,
+		GL_FLOAT, GL_FALSE,
+		sizeof(float) * 8,
+		(void*)(6 * sizeof(float))
+	);
+
+	glEnableVertexAttribArray(2);
 
 	glBindVertexArray(0);
 

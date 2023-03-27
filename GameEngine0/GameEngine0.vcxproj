@@ -147,22 +147,33 @@
   <ItemGroup>
     <ClInclude Include="includes\GameEngine0\CoreMinimal.h" />
     <ClInclude Include="includes\GameEngine0\Game.h" />
+    <ClInclude Include="includes\GameEngine0\Graphics\Camera.h" />
     <ClInclude Include="includes\GameEngine0\Graphics\GraphicsEngine.h" />
+    <ClInclude Include="includes\GameEngine0\Graphics\Mesh.h" />
     <ClInclude Include="includes\GameEngine0\Graphics\ShaderProgram.h" />
+    <ClInclude Include="includes\GameEngine0\Graphics\Texture.h" />
     <ClInclude Include="includes\GameEngine0\Graphics\VertexArrayObject.h" />
+    <ClInclude Include="includes\GameEngine0\Input.h" />
+    <ClInclude Include="includes\GameEngine0\Math\Transformation.h" />
     <ClInclude Include="includes\stb_image\stb_image.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Game\Source.cpp" />
     <ClCompile Include="source\GameEngine0\Game.cpp" />
+    <ClCompile Include="source\GameEngine0\Graphics\Camera.cpp" />
     <ClCompile Include="source\GameEngine0\Graphics\GraphicsEngine.cpp" />
+    <ClCompile Include="source\GameEngine0\Graphics\Mesh.cpp" />
     <ClCompile Include="source\GameEngine0\Graphics\ShaderProgram.cpp" />
+    <ClCompile Include="source\GameEngine0\Graphics\Texture.cpp" />
     <ClCompile Include="source\GameEngine0\Graphics\VertexArrayObject.cpp" />
+    <ClCompile Include="source\GameEngine0\Input.cpp" />
     <ClCompile Include="source\stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Game\Shaders\SimpleShader\SimpleShader.sfrag" />
-    <None Include="Game\Shaders\SimpleShader\SimpleShader.svert" />
+    <None Include="Game\Shaders\SimpleShader\VertexShader.sfrag" />
+    <None Include="Game\Shaders\SimpleShader\VertexShader.svert" />
+    <None Include="Game\Shaders\TextureShader\TextureShader.sfrag" />
+    <None Include="Game\Shaders\TextureShader\TextureShader.svert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

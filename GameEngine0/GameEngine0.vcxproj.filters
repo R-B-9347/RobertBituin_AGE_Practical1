@@ -33,6 +33,21 @@
     <ClInclude Include="includes\GameEngine0\Graphics\ShaderProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="includes\GameEngine0\Graphics\Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\GameEngine0\Graphics\Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\GameEngine0\Math\Transformation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\GameEngine0\Input.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\GameEngine0\Graphics\Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\stb_image.cpp">
@@ -53,9 +68,23 @@
     <ClCompile Include="source\GameEngine0\Graphics\ShaderProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="source\GameEngine0\Graphics\Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GameEngine0\Graphics\Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GameEngine0\Input.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GameEngine0\Graphics\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Game\Shaders\SimpleShader\SimpleShader.svert" />
-    <None Include="Game\Shaders\SimpleShader\SimpleShader.sfrag" />
+    <None Include="Game\Shaders\SimpleShader\VertexShader.svert" />
+    <None Include="Game\Shaders\SimpleShader\VertexShader.sfrag" />
+    <None Include="Game\Shaders\TextureShader\TextureShader.svert" />
+    <None Include="Game\Shaders\TextureShader\TextureShader.sfrag" />
   </ItemGroup>
 </Project>

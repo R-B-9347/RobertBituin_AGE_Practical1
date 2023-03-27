@@ -14,6 +14,9 @@ public:
 	GE0uint GetID() const { return ProgramID; }
 
 	void SetMat4(const char* ShaderVariable, glm::mat4 Value);
+
+	void SetInt(const char* ShaderVarName, int Value);
+
 private:
 	bool AttachShader(const wchar_t* ShaderFilePath, ShaderTypes Type);
 

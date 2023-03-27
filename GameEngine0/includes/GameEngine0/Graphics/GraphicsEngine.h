@@ -3,7 +3,8 @@
 #include "SDL2/SDL.h"
 #include "GL/glew.h"
 #include "GameEngine0/CoreMinimal.h"
-
+#include "GameEngine0/Math/Transformation.h"
+#include "GameEngine0/Graphics/Camera.h"
 
 class GraphicsEngine {
 public:
@@ -22,16 +23,26 @@ public:
 
 	SDL_Window* GetWindow() const;
 
-	void CreateVAO(GeometricShapes Shape);
+	MeshPtr CreateSimpleMeshShape(GeometricShapes Shape, Shaderptr MeshShader, TexturePtrStack MeshTextures);
 
-	void CreateShader(VFShaderParams ShaderFilePaths);
+	Shaderptr CreateShader(VFShaderParams ShaderFilePaths);
 
+	TexturePtr CreateTexture(const char* FilePath);
+
+	void ApplyScreenTransformations(Shaderptr Shader);
+
+	CameraPtr EngineDefaultCam;
+	float AdjFov;
 private:
 	SDL_Window* SdlWindow;
 	SDL_GLContext SdlGLContext;
-	VAOStack VAOs;
+
 	bool bWireframeMode;
 	void HandleWireframeMode(bool ShowbWireframeMode);
 
 	Shaderptr Shader;
+
+	TexturePtrStack TextureStack;
+
+	MeshPtrStack MeshStack;
 };
