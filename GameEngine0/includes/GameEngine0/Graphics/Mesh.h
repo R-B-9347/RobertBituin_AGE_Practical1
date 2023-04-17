@@ -2,6 +2,7 @@
 #include "GameEngine0/CoreMinimal.h"
 #include "GameEngine0/Math/Transformation.h"
 
+struct Vertex;
 
 class Mesh {
 public:
@@ -9,16 +10,23 @@ public:
 
 	~Mesh();
 
-	bool CreateSimpleShape(GeometricShapes Shape, Shaderptr MeshShader, TexturePtrStack MeshTextures);
+	bool CreateSimpleShape(GeometricShapes Shape, Shaderptr MeshShader, GE0uint MaterialSlot);
 
-	void Draw();
+	bool CreateMesh(vector<Vertex> Verticies, vector<GE0uint> Indicies, Shaderptr MeshShader, GE0uint MaterialSlot);
 
+	void Draw(MaterialPtr MeshMaterial);
+
+	GE0uint GetMaterialSlot() const { return MaterialSlot;}
+
+public:
 	CTransform Transform;
 
 private:
 	Shaderptr MeshShader;
 
-	TexturePtrStack MeshTextures;
+	GE0uint MaterialSlot;
 
 	VAOptr MeshVAO;
+
+	
 };

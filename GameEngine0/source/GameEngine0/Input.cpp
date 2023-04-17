@@ -1,5 +1,6 @@
 #include "..\..\includes\GameEngine0\Input.h"
 #include "GameEngine0/Game.h"
+#include "SDL2/SDL.h"
 #include <iostream>
 
 using namespace std;
@@ -58,6 +59,21 @@ bool Input::IsKeyDown(SDL_Scancode key)
 bool Input::IsMouseButtonDown(MouseButtons Button)
 {
 	return MouseButtonStates[Button];
+}
+
+void Input::CursorToggle(bool bVisibility)
+{
+	static SDL_bool bIsVisible = SDL_FALSE;
+
+	if (bVisibility && bIsVisible == SDL_FALSE) {
+		bIsVisible = SDL_TRUE;
+		SDL_SetRelativeMouseMode(bIsVisible);
+	}
+
+	else if (!bVisibility && bIsVisible == SDL_TRUE) {
+		bIsVisible = SDL_FALSE;
+		SDL_SetRelativeMouseMode(bIsVisible);
+	}
 }
 
 void Input::SetMouseButtonStatez(Uint8 ButtonIndex, bool CurrentState)

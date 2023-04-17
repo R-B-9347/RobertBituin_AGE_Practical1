@@ -1,10 +1,12 @@
 #pragma once
 #include "CoreMinimal.h"
-
+#include "GameEngine0/Math/Transformation.h"
 class Input;
 
 class Game {
 public:
+
+
 	//Get game instance or create one
 	static Game& GetGameInstance();
 
@@ -21,6 +23,11 @@ public:
 	GEptr GetGraphicsEngine() { return Graphics; }
 
 	void CloseApp() { bIsGameOver = true; }
+
+	TexturePtr GetDefaultEngineTexture();
+	
+	MaterialPtr GetDefuaultEngineMaterial();
+
 private:
 	Game();
 	~Game();
@@ -51,6 +58,9 @@ private:
 
 	Input* GameInput;
 
-	MeshPtr Tri;
-	MeshPtr Poly;
+	ModelPtr Poly1;
+	ModelPtr Poly;
+
+	ModelPtr Pillar;
+	ModelPtr Wall;
 };

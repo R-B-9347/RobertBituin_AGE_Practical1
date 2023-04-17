@@ -1,6 +1,6 @@
 #pragma once
 #include "GameEngine0/CoreMinimal.h"
-
+#include "GameEngine0/Graphics/Vertex.h"
 const PositionMatrix TrianglePositions{
 	// x	// y	// z
 	-0.5f,	-0.5f,	0.0f,	1.0f,0.0f,0.0f,		0.0f,0.0f,//bottom left
@@ -106,6 +106,7 @@ const IndexMatrix CubeIndicies{
 class VertexArrayObject {
 public:
 	VertexArrayObject(GeometricShapes ChosenShape);
+	VertexArrayObject(vector<Vertex> Verticies, vector<GE0uint> Indicies);
 	~VertexArrayObject();
 
 	void Draw();
@@ -115,4 +116,7 @@ private:
 	//VAB - Vertices
 	//EAB - Indicies
 	GE0uint ID, VAB, EAB;
+
+	vector<Vertex> Verticies;
+	vector<GE0uint> Indicies;
 };

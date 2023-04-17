@@ -1,10 +1,7 @@
 #pragma once
-
 #include "SDL2/SDL.h"
-#include "GL/glew.h"
 #include "GameEngine0/CoreMinimal.h"
 #include "GameEngine0/Math/Transformation.h"
-#include "GameEngine0/Graphics/Camera.h"
 
 class GraphicsEngine {
 public:
@@ -23,7 +20,9 @@ public:
 
 	SDL_Window* GetWindow() const;
 
-	MeshPtr CreateSimpleMeshShape(GeometricShapes Shape, Shaderptr MeshShader, TexturePtrStack MeshTextures);
+	ModelPtr CreateSimpleModelShape(GeometricShapes Shape, Shaderptr MeshShader);
+
+	ModelPtr ImportModel(const char* FilePath, Shaderptr Shader);
 
 	Shaderptr CreateShader(VFShaderParams ShaderFilePaths);
 
@@ -33,6 +32,9 @@ public:
 
 	CameraPtr EngineDefaultCam;
 	float AdjFov;
+	TexturePtr DefaultEngineTexture;
+	MaterialPtr DefaultEngingeMaterial;
+
 private:
 	SDL_Window* SdlWindow;
 	SDL_GLContext SdlGLContext;
@@ -44,5 +46,6 @@ private:
 
 	TexturePtrStack TextureStack;
 
-	MeshPtrStack MeshStack;
+	ModelPtrStack ModelStack;
+
 };

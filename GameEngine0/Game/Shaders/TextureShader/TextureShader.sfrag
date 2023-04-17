@@ -1,10 +1,122 @@
 #version 460 core
 
+struct MaterialData {
+	sampler2D TColour;
+	sampler2D TSpecular;
+	sampler2D TEmissive;
+
+	vec3 MColour;
+	vec3 MSpecular;
+	vec3 MEmissive;
+
+	float Shininess;
+};
+
+
+struct ShaderMaterial {
+	vec3 Colour;
+	vec3 Specular;
+	vec3 Emissive;
+	float Shininess;
+};
+
+uniform MaterialData ImportMat;
+
+in vec3 VPosition;
+in vec3 VNormals;
 in vec2 TexCoords;
+
+in vec3 CamPosition;
+
 out vec4 OutColour;
 
-uniform sampler2D TextureColour;
+struct DirLight {
+	vec3 Colour;
+	vec3 Direction;
+	vec3 AmbientLight;
+};
+
+struct PointLight {
+	vec3 Colour;
+	vec3 Position;
+	float Attenuation;
+};
+
+DirLight[2] DirLights;
+PointLight[50] PointLights;
+
+vec3 CalculateDirLight(ShaderMaterial SMat, vec3 ViewDir, DirLight Light);
+vec3 CalculatePointLight(ShaderMaterial SMat, vec3 ViewDir, PointLight Light);
 
 void main (){
-	OutColour = texture(TextureColour, TexCoords);
+	ShaderMaterial SMat;
+	SMat.Colour = texture(ImportMat.TColour, TexCoords).rgb * ImportMat.MColour;
+	SMat.Specular = texture(ImportMat.TSpecular, TexCoords).rgb * ImportMat.MSpecular;
+	SMat.Emissive = texture(ImportMat.TEmissive, TexCoords).rgb * ImportMat.MEmissive;
+	SMat.Shininess = ImportMat.Shininess;
+
+	vec3 ViewDir = normalize(CamPosition - VPosition);
+
+	DirLights[0].Colour = vec3(1.0f);
+	DirLights[0].Direction = vec3(0.0f, -1.0f, 0.0f);
+	DirLights[0].AmbientLight = vec3(0.1f);
+
+	PointLights[0].Colour = vec3(1.0f);
+	PointLights[0].Position = vec3(2.0f);
+	PointLights[0].Attenuation = 10.0f;
+
+	PointLights[0].Colour = vec3(3.0f);
+	PointLights[0].Position = vec3(-2.0f);
+	PointLights[0].Attenuation = 9.0f;
+
+	vec3 result = CalculatePointLight(SMat, ViewDir , PointLights[0]);
+	result += CalculateDirLight(SMat, ViewDir , DirLights[0]);
+	result += CalculatePointLight(SMat, ViewDir , PointLights[1]);
+	OutColour = vec4(result, 1.0f);
+}
+
+vec3 CalculateDirLight(ShaderMaterial SMat, vec3 ViewDir, DirLight Light) {
+	vec3 LightDir = normalize(-Light.Direction);
+
+	float Angle = max(0.0, dot(normalize(VNormals), LightDir));
+
+	vec3 AmbientLight = Light.AmbientLight * SMat.Colour;
+
+	AmbientLight += SMat.Emissive;
+
+	vec3 FinalColour = Light.Colour * (Angle * SMat.Colour);
+
+	vec3 ReflectDir = reflect(-Light.Direction, normalize(VNormals));
+
+	float SpecPower = pow(max(0.0, dot(ViewDir, ReflectDir)), SMat.Shininess * 128.0f);
+
+	vec3 FinalSpecular = SpecPower * (Angle * SMat.Colour);
+
+	return vec3(AmbientLight + FinalColour + FinalSpecular);
+}
+
+vec3 CalculatePointLight(ShaderMaterial SMat, vec3 ViewDir, PointLight Light) {
+	vec3 LightDir = normalize(-Light.Position - VPosition);
+
+	float Distance = length(Light.Position - VPosition);
+
+	float Attenuation = min(Light.Attenuation / (Distance * Distance), 1.0f);
+
+	float Angle = max(0.0, dot(normalize(VNormals), LightDir));
+
+	float Falloff = Angle * Attenuation;
+
+	vec3 AmbientLight = vec3(0.0f) * SMat.Colour;
+
+	AmbientLight += SMat.Emissive;
+
+	vec3 FinalColour = Light.Colour * (Falloff * SMat.Colour);
+
+	vec3 ReflectDir = reflect(-Light.Position, normalize(VNormals));
+
+	float SpecPower = pow(max(0.0, dot(ViewDir, ReflectDir)), SMat.Shininess * 128.0f);
+
+	vec3 FinalSpecular = SpecPower * (Falloff * SMat.Colour);
+
+	return vec3(AmbientLight + FinalColour + FinalSpecular);
 }

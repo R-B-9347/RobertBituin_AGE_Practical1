@@ -1,7 +1,7 @@
 #include "..\..\..\includes\GameEngine0\Graphics\Mesh.h"
 #include "GameEngine0/Graphics/ShaderProgram.h"
 #include "GameEngine0/Graphics/VertexArrayObject.h"
-#include "GameEngine0/Graphics/Texture.h"
+#include "GameEngine0/Graphics/Material.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "GameEngine0/Game.h"
 #include "GameEngine0/Graphics/GraphicsEngine.h"
@@ -15,11 +15,10 @@ Mesh::Mesh()
 Mesh::~Mesh()
 {
 	MeshShader = nullptr;
-	MeshTextures.clear();
 	MeshVAO = nullptr;
 }
 
-bool Mesh::CreateSimpleShape(GeometricShapes Shape, Shaderptr MeshShader, TexturePtrStack MeshTextures)
+bool Mesh::CreateSimpleShape(GeometricShapes Shape, Shaderptr MeshShader, GE0uint MaterialSlot)
 {
 	cout << "creating mesh.." << endl;
 
@@ -31,21 +30,39 @@ bool Mesh::CreateSimpleShape(GeometricShapes Shape, Shaderptr MeshShader, Textur
 	}
 
 	this->MeshShader = MeshShader;
-	this->MeshTextures = MeshTextures;
+	this->MaterialSlot = MaterialSlot;
 
 	cout << "Mesh Created Successfully" << endl;
 
 	return true;
 }
 
-void Mesh::Draw()
+bool Mesh::CreateMesh(vector<Vertex> Verticies, vector<GE0uint> Indicies, Shaderptr MeshShader, GE0uint MaterialSlot)
+{
+	cout << "creating mesh.." << endl;
+
+	MeshVAO = make_shared<VAO>(Verticies, Indicies);
+
+	if (MeshVAO == nullptr) {
+		cout << "mesh failed to be created" << endl;
+		return false;
+	}
+
+	this->MeshShader = MeshShader;
+	this->MaterialSlot = MaterialSlot;
+
+	cout << "Mesh Created Successfully" << endl;
+
+	return true;
+}
+
+
+void Mesh::Draw(MaterialPtr MeshMaterial)
 {
 	MeshShader->RunShader();
 
-	for (GE0uint Index = 0; Index < MeshTextures.size(); Index++) {
-		MeshTextures[Index]->ActivateTexture(Index);
-		MeshShader->SetInt("TextureColour", Index);
-		MeshTextures[Index]->BindTexture();
+	if (MeshMaterial != nullptr) {
+		MeshMaterial->Draw(MeshShader);
 	}
 
 	static CTransform OldTransform;

@@ -84,21 +84,85 @@ VertexArrayObject::VertexArrayObject(GeometricShapes ChosenShape)
 
 }
 
+VertexArrayObject::VertexArrayObject(vector<Vertex> Verticies, vector<GE0uint> Indicies)
+{
+	ID = EAB = VAB = 0;
+
+	this->Verticies = Verticies;
+	this->Indicies = Indicies;
+
+	//Positions
+	glGenVertexArrays(1, &ID);
+
+	glBindVertexArray(ID);
+
+	glGenBuffers(1, &VAB);
+	glBindBuffer(GL_ARRAY_BUFFER, VAB);
+	glBufferData(GL_ARRAY_BUFFER, Verticies.size() * sizeof(Vertex), &Verticies[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, &EAB);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EAB);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, Indicies.size() * sizeof(GE0uint), &Indicies[0], GL_STATIC_DRAW);
+
+	glVertexAttribPointer(
+		0,    //first data set
+		3,    //how many number in matrix to make triangle
+		GL_FLOAT, GL_FALSE,
+		sizeof(float) * 8,
+		(void*)0
+	);
+
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(
+		1,
+		3,
+		GL_FLOAT, GL_FALSE,
+		sizeof(float) * 8,
+		(void*)(3 * sizeof(float))
+	);
+
+	glEnableVertexAttribArray(1);
+
+	glVertexAttribPointer(
+		2,
+		2,
+		GL_FLOAT, GL_FALSE,
+		sizeof(float) * 8,
+		(void*)(6 * sizeof(float))
+	);
+
+	glEnableVertexAttribArray(2);
+
+	glBindVertexArray(0);
+
+}
+
 VertexArrayObject::~VertexArrayObject()
 {
 	glDeleteVertexArrays(1, &ID);
 
 	Shape.PositionMatrix.clear();
 	Shape.IndexMatrix.clear();
+	Verticies.clear();
+	Indicies.clear();
+
 
 	cout << "Deleted VAO." << endl;
 }
 
 void VertexArrayObject::Draw()
 {
+	vector<GE0uint> IndiciesToUse;
+
+	if (Verticies.size() > 0)
+		IndiciesToUse = Indicies;
+	else
+		IndiciesToUse = Shape.IndexMatrix;
+
 	glBindVertexArray(ID);
 
-	glDrawElements(GL_TRIANGLES, Shape.IndexMatrix.size(),GL_UNSIGNED_INT, (void*)0);
+	glDrawElements(GL_TRIANGLES, IndiciesToUse.size(),GL_UNSIGNED_INT, (void*)0);
 
 	glBindVertexArray(0);
 

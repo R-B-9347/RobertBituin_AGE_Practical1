@@ -1,10 +1,12 @@
 #include"GameEngine0/Graphics/GraphicsEngine.h"
-#include"GameEngine0/Graphics/Mesh.h"
+#include "GameEngine0/Graphics/Model.h"
 #include"GameEngine0/Graphics/ShaderProgram.h"
 #include "GL/glew.h"
 #include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "GameEngine0/Graphics/Texture.h"
+#include "GameEngine0/Graphics/Material.h"
+#include "GameEngine0/Graphics/Camera.h"
 
 GraphicsEngine::GraphicsEngine()
 {
@@ -17,7 +19,7 @@ GraphicsEngine::GraphicsEngine()
 
 GraphicsEngine::~GraphicsEngine()
 {
-	MeshStack.clear();
+	ModelStack.clear();
 
 	Shader = nullptr;
 
@@ -85,6 +87,10 @@ bool GraphicsEngine::initGE(const char* WTitle, bool bFullscreen, int WWidth, in
 	}
 
 	glEnable(GL_DEPTH_TEST);
+
+	DefaultEngineTexture = CreateTexture("Game/Textures/Grey.png");
+	DefaultEngingeMaterial = make_shared<Material>();
+
 	return true;
 }
 
@@ -96,7 +102,7 @@ void GraphicsEngine::PresentGraphics()
 void GraphicsEngine::ClearGraphics()
 {
 	//background color
-	glClearColor(0.255,0.192f,0.203f,1.0f);
+	glClearColor(0.2,0.1f,0.2f,1.0f);
 	//clear screen
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -107,8 +113,8 @@ void GraphicsEngine::Draw()
 
 	HandleWireframeMode(false);
 
-	for (MeshPtr LMesh : MeshStack) {
-		LMesh->Draw();
+	for (ModelPtr LModel : ModelStack) {
+		LModel->Draw();
 	}
 
 	PresentGraphics();
@@ -119,17 +125,28 @@ SDL_Window* GraphicsEngine::GetWindow() const
 	return SdlWindow;
 }
 
-MeshPtr GraphicsEngine::CreateSimpleMeshShape(GeometricShapes Shape, Shaderptr MeshShader, TexturePtrStack MeshTextures)
+ModelPtr GraphicsEngine::CreateSimpleModelShape(GeometricShapes Shape, Shaderptr MeshShader)
 {
-	MeshPtr NewMesh = make_shared<Mesh>();
+	ModelPtr NewModel = make_shared<Model>();
 
-	if (!NewMesh->CreateSimpleShape(Shape, MeshShader, MeshTextures)) {
-		 ;
+	if (!NewModel->CreateSimpleMesh(Shape, MeshShader)) {
+		return nullptr;
 	}
 	
-	MeshStack.push_back(NewMesh);
+	ModelStack.push_back(NewModel);
 
-	return NewMesh;
+	return NewModel;
+}
+
+ModelPtr GraphicsEngine::ImportModel(const char* FilePath, Shaderptr Shader)
+{
+	ModelPtr NewModel = make_shared<Model>();
+
+	if(!NewModel->ImportMeshFromFile(FilePath, Shader)) {
+		return nullptr;
+	}
+	ModelStack.push_back(NewModel);
+	return NewModel;
 }
 
 Shaderptr GraphicsEngine::CreateShader(VFShaderParams ShaderFilePaths)

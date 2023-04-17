@@ -1,5 +1,7 @@
 #include "..\..\..\includes\GameEngine0\Graphics\Camera.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "GameEngine0/Game.h"
+
 Camera::Camera()
 {
 	UpdateDirectionVectors();
@@ -14,6 +16,22 @@ void Camera::Translate(Vector3 Location)
 	UpdateDirectionVectors();
 }
 
+void Camera::AddMovementInput(Vector3 Direction)
+{
+	if (glm::length(Direction) == 0)
+		return;
+
+	Direction = glm::normalize(Direction);
+
+	Vector3 Vel = Direction * (CameraData.speed * Game::GetGameInstance().GetFDeltaTime());
+
+	Vector3 NewPos = Transform.Location + Vel;
+
+	if (Transform.Location != NewPos) {
+		Translate(NewPos);
+	}
+}
+
 glm::mat4 Camera::GetViewMatrix() const
 {
 
@@ -22,6 +40,8 @@ glm::mat4 Camera::GetViewMatrix() const
 
 void Camera::RotatePitch(float Amount)
 {
+	Transform.Rotation.x += Amount * CameraData.LookSense;
+
 	Transform.Rotation.x += Amount;
 	if (Transform.Rotation.x > 89.0f)
 		Transform.Rotation.x = 89.0f;
@@ -32,6 +52,8 @@ void Camera::RotatePitch(float Amount)
 
 void Camera::RotateYaw(float Amount)
 {
+	Transform.Rotation.y += Amount * CameraData.LookSense;
+
 	Transform.Rotation.y += Amount;
 
 	Transform.Rotation.y = glm::mod(Transform.Rotation.y, 360.0f);

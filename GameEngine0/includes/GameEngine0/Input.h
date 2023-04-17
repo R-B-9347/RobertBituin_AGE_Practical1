@@ -17,6 +17,7 @@ public:
 
 	bool IsMouseButtonDown(MouseButtons Button);
 
+	void CursorToggle(bool bVisibility);
 private:
 	void SetMouseButtonStatez(Uint8 ButtonIndex, bool CurrentState);
 	void OnMouseMove(SDL_MouseMotionEvent& MEvent);

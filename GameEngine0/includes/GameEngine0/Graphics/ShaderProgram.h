@@ -1,6 +1,8 @@
 #pragma once
 #include "GameEngine0/CoreMinimal.h"
 #include "glm/glm.hpp"
+
+
 class ShaderProgram {
 public:
 	ShaderProgram();
@@ -16,6 +18,10 @@ public:
 	void SetMat4(const char* ShaderVariable, glm::mat4 Value);
 
 	void SetInt(const char* ShaderVarName, int Value);
+
+	void SetFloat(const char* ShaderVarName, float Value);
+
+	void SetVector3(const char* ShaderVarName, glm::vec3 Value);
 
 private:
 	bool AttachShader(const wchar_t* ShaderFilePath, ShaderTypes Type);

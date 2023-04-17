@@ -8,6 +8,7 @@ struct STCameraData {
 	float NearClip = 0.01f;
 	float Farclip = 1000.0f;
 
+	float LookSense = 25.0f;
 };
 
 class Camera {
@@ -15,6 +16,8 @@ public:
 	Camera();
 
 	void Translate(Vector3 Location);
+
+	void AddMovementInput(Vector3 Direction);
 
 	CTransform GetTransforms() const {return Transform; }
 	CDirection GetDirections() const { return Directions; }

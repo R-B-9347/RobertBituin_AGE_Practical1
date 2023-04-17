@@ -122,7 +122,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(SolutionDir)/GameEngine0/lib/</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;opengl32.lib;assimp-vc143-mtd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>copy "$(SolutionDir)GameEngine0\lib\*.dll" "$(Platform)\$(Configuration)"</Command>
@@ -149,9 +149,12 @@
     <ClInclude Include="includes\GameEngine0\Game.h" />
     <ClInclude Include="includes\GameEngine0\Graphics\Camera.h" />
     <ClInclude Include="includes\GameEngine0\Graphics\GraphicsEngine.h" />
+    <ClInclude Include="includes\GameEngine0\Graphics\Material.h" />
     <ClInclude Include="includes\GameEngine0\Graphics\Mesh.h" />
+    <ClInclude Include="includes\GameEngine0\Graphics\Model.h" />
     <ClInclude Include="includes\GameEngine0\Graphics\ShaderProgram.h" />
     <ClInclude Include="includes\GameEngine0\Graphics\Texture.h" />
+    <ClInclude Include="includes\GameEngine0\Graphics\Vertex.h" />
     <ClInclude Include="includes\GameEngine0\Graphics\VertexArrayObject.h" />
     <ClInclude Include="includes\GameEngine0\Input.h" />
     <ClInclude Include="includes\GameEngine0\Math\Transformation.h" />
@@ -162,7 +165,9 @@
     <ClCompile Include="source\GameEngine0\Game.cpp" />
     <ClCompile Include="source\GameEngine0\Graphics\Camera.cpp" />
     <ClCompile Include="source\GameEngine0\Graphics\GraphicsEngine.cpp" />
+    <ClCompile Include="source\GameEngine0\Graphics\Material.cpp" />
     <ClCompile Include="source\GameEngine0\Graphics\Mesh.cpp" />
+    <ClCompile Include="source\GameEngine0\Graphics\Model.cpp" />
     <ClCompile Include="source\GameEngine0\Graphics\ShaderProgram.cpp" />
     <ClCompile Include="source\GameEngine0\Graphics\Texture.cpp" />
     <ClCompile Include="source\GameEngine0\Graphics\VertexArrayObject.cpp" />
