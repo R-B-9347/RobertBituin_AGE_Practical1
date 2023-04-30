@@ -7,6 +7,7 @@
 #include "GameEngine0/Graphics/Texture.h"
 #include "GameEngine0/Graphics/Material.h"
 #include "GameEngine0/Graphics/Camera.h"
+#include "GameEngine0/Collisions/Collision.h"
 
 GraphicsEngine::GraphicsEngine()
 {
@@ -109,15 +110,16 @@ void GraphicsEngine::ClearGraphics()
 
 void GraphicsEngine::Draw()
 {
-	ClearGraphics();
+
 
 	HandleWireframeMode(false);
+
+
 
 	for (ModelPtr LModel : ModelStack) {
 		LModel->Draw();
 	}
 
-	PresentGraphics();
 }
 
 SDL_Window* GraphicsEngine::GetWindow() const
@@ -203,6 +205,16 @@ void GraphicsEngine::ApplyScreenTransformations(Shaderptr Shader)
 
 	Shader->SetMat4("view", view);
 	Shader->SetMat4("projection", projection);
+}
+
+void GraphicsEngine::RemoveModel(ModelPtr ModelToRemove)
+{
+	ModelPtrStack::iterator ModelIndex = find(ModelStack.begin(),ModelStack.end(), ModelToRemove);
+
+	if (ModelIndex == ModelStack.end())
+		return;
+
+	ModelStack.erase(ModelIndex);
 }
 
 void GraphicsEngine::HandleWireframeMode(bool bShowWireframeMode)

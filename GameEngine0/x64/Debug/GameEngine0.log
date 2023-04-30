@@ -1,40 +1,14 @@
-﻿  Source.cpp
-  Game.cpp
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\GameEngine0\Graphics\Model.h(8,13): warning C4099: 'aiNode': type name first seen using 'struct' now seen using 'class'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\assimp\scene.h(82): message : see declaration of 'aiNode'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\GameEngine0\Graphics\Model.h(9,14): warning C4099: 'aiScene': type name first seen using 'struct' now seen using 'class'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\assimp\scene.h(243): message : see declaration of 'aiScene'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\GameEngine0\Graphics\Model.h(10,13): warning C4099: 'aiMesh': type name first seen using 'struct' now seen using 'class'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\assimp\mesh.h(605): message : see declaration of 'aiMesh'
-  Camera.cpp
-  GraphicsEngine.cpp
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\GameEngine0\Graphics\Model.h(8,13): warning C4099: 'aiNode': type name first seen using 'struct' now seen using 'class'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\assimp\scene.h(82): message : see declaration of 'aiNode'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\GameEngine0\Graphics\Model.h(9,14): warning C4099: 'aiScene': type name first seen using 'struct' now seen using 'class'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\assimp\scene.h(243): message : see declaration of 'aiScene'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\GameEngine0\Graphics\Model.h(10,13): warning C4099: 'aiMesh': type name first seen using 'struct' now seen using 'class'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\assimp\mesh.h(605): message : see declaration of 'aiMesh'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\source\GameEngine0\Graphics\GraphicsEngine.cpp(32,2): warning C4551: function call missing argument list
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\source\GameEngine0\Graphics\GraphicsEngine.cpp(105,33): warning C4305: 'argument': truncation from 'double' to 'GLclampf'
-  Material.cpp
-  Mesh.cpp
-  Model.cpp
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\GameEngine0\Graphics\Model.h(8,13): warning C4099: 'aiNode': type name first seen using 'struct' now seen using 'class'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\assimp\scene.h(82): message : see declaration of 'aiNode'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\GameEngine0\Graphics\Model.h(9,14): warning C4099: 'aiScene': type name first seen using 'struct' now seen using 'class'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\assimp\scene.h(243): message : see declaration of 'aiScene'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\GameEngine0\Graphics\Model.h(10,13): warning C4099: 'aiMesh': type name first seen using 'struct' now seen using 'class'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\includes\assimp\mesh.h(605): message : see declaration of 'aiMesh'
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\source\GameEngine0\Graphics\Model.cpp(27,4): warning C4390: ';': empty controlled statement found; is this the intent?
-  ShaderProgram.cpp
-  Texture.cpp
-  VertexArrayObject.cpp
-C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\source\GameEngine0\Graphics\VertexArrayObject.cpp(165,77): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  Input.cpp
-  stb_image.cpp
-  Generating Code...
-  GameEngine0.vcxproj -> C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\x64\Debug\GameEngine0.exe
-  C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\lib\assimp-vc143-mtd.dll
-  C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\lib\glew32.dll
-  C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0\GameEngine0\lib\SDL2.dll
+﻿  Game.cpp
+C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0 - V2 - Copy\GameEngine0\includes\GameEngine0\Graphics\Model.h(8,13): warning C4099: 'aiNode': type name first seen using 'struct' now seen using 'class'
+C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0 - V2 - Copy\GameEngine0\includes\assimp\scene.h(82): message : see declaration of 'aiNode'
+C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0 - V2 - Copy\GameEngine0\includes\GameEngine0\Graphics\Model.h(9,14): warning C4099: 'aiScene': type name first seen using 'struct' now seen using 'class'
+C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0 - V2 - Copy\GameEngine0\includes\assimp\scene.h(243): message : see declaration of 'aiScene'
+C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0 - V2 - Copy\GameEngine0\includes\GameEngine0\Graphics\Model.h(10,13): warning C4099: 'aiMesh': type name first seen using 'struct' now seen using 'class'
+C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0 - V2 - Copy\GameEngine0\includes\assimp\mesh.h(605): message : see declaration of 'aiMesh'
+C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0 - V2 - Copy\GameEngine0\source\GameEngine0\Game.cpp(207,43): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0 - V2 - Copy\GameEngine0\source\GameEngine0\Game.cpp(208,50): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  GameEngine0.vcxproj -> C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0 - V2 - Copy\x64\Debug\GameEngine0.exe
+  C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0 - V2 - Copy\GameEngine0\lib\assimp-vc143-mtd.dll
+  C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0 - V2 - Copy\GameEngine0\lib\glew32.dll
+  C:\Users\Evene\Documents\RobertBituin_AGE_Practical1\GameEngine0 - V2 - Copy\GameEngine0\lib\SDL2.dll
           3 file(s) copied.

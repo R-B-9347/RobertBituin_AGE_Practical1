@@ -1,12 +1,15 @@
 #include "..\..\..\includes\GameEngine0\Graphics\Camera.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "GameEngine0/Game.h"
+#include "GameEngine0/Collisions/Collision.h"
 
 Camera::Camera()
 {
 	UpdateDirectionVectors();
 	Transform.Location -= Directions.Forward * 2.0f;
 	
+	CameraCollision = make_shared<BoxCollision>(Transform.Location, Vector3(0.0f), Vector3(1.0f));
+
 }
 
 void Camera::Translate(Vector3 Location)
@@ -63,6 +66,13 @@ void Camera::ZoomFOV(float Amount)
 {
 	STCameraData NewFOV;
 		NewFOV.FOV += Amount;
+}
+
+void Camera::Update()
+{
+	if (CameraCollision != nullptr) {
+		CameraCollision->SetLocation(Transform.Location);
+	}
 }
 
 void Camera::UpdateDirectionVectors()

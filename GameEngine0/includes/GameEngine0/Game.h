@@ -1,6 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "GameEngine0/Math/Transformation.h"
+#include "Collisions/Collision.h"
 class Input;
 
 class Game {
@@ -27,6 +28,8 @@ public:
 	TexturePtr GetDefaultEngineTexture();
 	
 	MaterialPtr GetDefuaultEngineMaterial();
+
+	void RemoveModelFromGame(ModelPtr& ModelToRemove);
 
 private:
 	Game();
@@ -58,9 +61,15 @@ private:
 
 	Input* GameInput;
 
-	ModelPtr Poly1;
-	ModelPtr Poly;
+	ModelPtr CollectStar;
+	ModelPtr CollectScroll;
 
-	ModelPtr Pillar;
+	ModelPtr AHouse;
 	ModelPtr Wall;
+	ModelPtr Floor;
+	ModelPtr Shrine;
+	ModelPtr Portal;
+	ModelPtr Wall2;
+
+	ModelPtr CollectAnk;
 };

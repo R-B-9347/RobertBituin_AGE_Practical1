@@ -4,7 +4,7 @@
 #include "GameEngine0/Input.h"
 #include "GameEngine0/Graphics/Camera.h"
 #include "GameEngine0/Graphics/Material.h"
-
+#include "GameEngine0/Collisions/Collision.h"
 
 Game& Game::GetGameInstance()
 {
@@ -41,6 +41,12 @@ MaterialPtr Game::GetDefuaultEngineMaterial()
 	return Graphics->DefaultEngingeMaterial;
 }
 
+void Game::RemoveModelFromGame(ModelPtr& ModelToRemove)
+{
+	Graphics->RemoveModel(ModelToRemove);
+	ModelToRemove = nullptr;
+}
+
 Game::Game()
 {
 	cout << "Game Initialized" << endl;
@@ -74,34 +80,82 @@ void Game::Run()
 		MGrey->BaseColour.TextureV3 = TGrey;
 		MGrid->BaseColour.TextureV3 = TColor;
 
-		Poly = Graphics->ImportModel("Game/Models/Primitives/Cube.fbx", TextureShader);
-		Poly1 = Graphics->ImportModel("Game/Models/Primitives/Sphere.fbx", TextureShader);
+		CollectStar = Graphics->ImportModel("Game/Models/lost-wish-collectable/Star/starbit_low.fbx", TextureShader);
+		CollectScroll = Graphics->ImportModel("Game/Models/fantasy-scroll/Scroll/Collectable OBJ.obj", TextureShader);
+		CollectAnk = Graphics->ImportModel("Game/Models/ankh-asset/Ank/ankh2.fbx", TextureShader);
 
-		Poly->SetMaterialBySlot(0, MGrey);
-		Poly1->SetMaterialBySlot(0, MGrid);
+		CollectStar->SetMaterialBySlot(0, MGrey);
+		CollectScroll->SetMaterialBySlot(0, MGrid);
 
-		Poly->Transform.Location = Vector3(0.0f, 0.0f, 1.0f);
-		Poly1->Transform.Location = Vector3(0.0f, 0.0f, -1.0f);
+		CollectScroll->AddCollisionToModel(Vector3(2.0f));
 
-		Wall = Graphics->ImportModel("Game/Models/DamageWall/source/SM_Wall_Damaged_2x1_A.obj", TextureShader);
-		Wall->Transform.Scale = Vector3(0.03f);
-		Wall->Transform.Rotation.x = 90.0f;
-		Wall->Transform.Location = Vector3(0.0f, -2.0f, 0.0f);
+		CollectStar->Transform.Location = Vector3(-20.0f, 0.0f, -20.0f);
+		CollectStar->Transform.Scale = Vector3(0.007f);
+		CollectScroll->Transform.Location = Vector3(0.0f, 0.0f, -2.0f);
+		CollectScroll->Transform.Scale = Vector3(0.07f);
 
-		TexturePtr TWall = Graphics->CreateTexture("Game/Models/DamageWall/textures/T_Wall_Damaged_2x1_A_BC.png");
-		MaterialPtr MWall = make_shared<Material>();
-		MWall->BaseColour.TextureV3 = TWall;
-		Wall->SetMaterialBySlot(1, MWall);
+		CollectAnk->Transform.Location = Vector3(20.0f, -2.0f, 20.0f);
+		CollectAnk->Transform.Scale = Vector3(0.007f);
 
-		Pillar = Graphics->ImportModel("Game/Models/MedPillar/source/pillars_low/pillars_low.fbx", TextureShader);
-		Pillar->Transform.Scale = Vector3(0.003f);
-		Pillar->Transform.Rotation.x = 90.0f;
-		Pillar->Transform.Location = Vector3(0.0f, 2.0f, 0.0f);
+		CollectAnk->AddCollisionToModel(Vector3(2.0f));
+		CollectStar->AddCollisionToModel(Vector3(2.0f));
 
-		TexturePtr TPillar = Graphics->CreateTexture("Game/Models/MedPillar/source/pillars_low/textures/pillars_low_stone rooff.001_BaseColor.1001.jpg");
-		MaterialPtr MPillar = make_shared<Material>();
-		MPillar->BaseColour.TextureV3 = TPillar;
-		Pillar->SetMaterialBySlot(0, MPillar);
+		Portal = Graphics->ImportModel("Game/Models/portal/Portal/portal.fbx", TextureShader);
+		Portal->Transform.Scale = Vector3(0.005f);
+		Portal->Transform.Rotation.y = 90.0f;
+		Portal->Transform.Location = Vector3(2.0f, -2.0f, 0.0f);
+
+		AHouse = Graphics->ImportModel("Game/Models/abandoned-house/House/abandonhouse.fbx", TextureShader);
+		AHouse->Transform.Scale = Vector3(1.5f);
+		AHouse->Transform.Rotation.x = -90.0f;
+		AHouse->Transform.Location = Vector3(20.0f, -2.0f, 20.0f);
+
+		Shrine = Graphics->ImportModel("Game/Models/japanese-shrine/Shrine/Shrine_02.fbx", TextureShader);
+		Shrine->Transform.Scale = Vector3(0.05f);
+		//Shrine->Transform.Rotation.x = 90.0f;
+		Shrine->Transform.Location = Vector3(-20.0f, -2.0f, -20.0f);
+
+		Floor = Graphics->ImportModel("Game/Models/DamageWall/SM_Wall_Damaged_2x1_A.obj", TextureShader);
+		Floor->Transform.Scale = Vector3(1.0f, 1.0f, 0.03f);
+		Floor->Transform.Rotation.x = 90.0f;
+		Floor->Transform.Location = Vector3(0.0f, -2.75f, -15.0f);
+
+		Portal->AddCollisionToModel(Vector3(1.25f, 4.0f, 10.0f), Vector3(0.0f, 2.0f, 0.0f));
+
+		TexturePtr TPortal = Graphics->CreateTexture("Game/Models/portal/textures/portalNormal.png");
+		MaterialPtr MPortal = make_shared<Material>();
+		MPortal->BaseColour.TextureV3 = TPortal;
+		Portal->SetMaterialBySlot(0, MPortal);
+
+		TexturePtr TShrine = Graphics->CreateTexture("Game/Models/japanese-shrine/textures/Shrine_02_Main_01_SH2_BB_Base_02_NormalOpe.png");
+		MaterialPtr MShrine = make_shared<Material>();
+		MShrine->BaseColour.TextureV3 = TShrine;
+		Shrine->SetMaterialBySlot(0, MShrine);
+
+		TexturePtr THouse = Graphics->CreateTexture("Game/Models/abandoned-house/textures/AbHouse_Base_Color.png");
+		MaterialPtr MHouse = make_shared<Material>();
+		MHouse->BaseColour.TextureV3 = THouse;
+		AHouse->SetMaterialBySlot(0, MHouse);
+
+		TexturePtr TFloor = Graphics->CreateTexture("Game/Models/Textures/GreySquare.jpg");
+		MaterialPtr MFloor = make_shared<Material>();
+		MFloor->BaseColour.TextureV3 = TFloor;
+		Floor->SetMaterialBySlot(1, MFloor);
+
+		TexturePtr TAnk = Graphics->CreateTexture("Game/Models/ankh-asset/Ank/ankh2_BaseColor.png");
+		MaterialPtr MAnk = make_shared<Material>();
+		MAnk->BaseColour.TextureV3 = TAnk;
+		CollectAnk->SetMaterialBySlot(0, MAnk);
+
+		TexturePtr TStar = Graphics->CreateTexture("Game/Models/lost-wish-collectable/Star/textures/m_Starbit_Normal_DirectX.png");
+		MaterialPtr MStar = make_shared<Material>();
+		MStar->BaseColour.TextureV3 = TStar;
+		CollectStar->SetMaterialBySlot(0, MStar);
+
+		TexturePtr TScroll = Graphics->CreateTexture("Game/Models/fantasy-scroll/Scroll/Collectable_lambert1_BaseColor.png");
+		MaterialPtr MScroll = make_shared<Material>();
+		MScroll->BaseColour.TextureV3 = TScroll;
+		CollectScroll->SetMaterialBySlot(1, MScroll);
 
 	}
 	while (!bIsGameOver) {
@@ -119,29 +173,10 @@ void Game::Run()
 void Game::ProcessInpout()
 {
 	GameInput->ProcessInput();
-}
-
-void Game::Update()
-{
-	static double LastFrameTime = 0.0;
-	double CurrentFrameTime = static_cast<double>(SDL_GetTicks64());
-	double NewDeltaTime = CurrentFrameTime - LastFrameTime;
-	DeltaTime = NewDeltaTime / 1000.0;
-	LastFrameTime = CurrentFrameTime;
-
-
-	Wall->Transform.Rotation.z += 50.0f * GetFDeltaTime();
-
-
-	Poly->Transform.Rotation.x += 50.0f * GetFDeltaTime();
-	Poly->Transform.Rotation.y += 50.0f * GetFDeltaTime();
-	Poly->Transform.Rotation.z += 50.0f * GetFDeltaTime();
 
 
 	Vector3 CameraInput = Vector3(0.0f);
 	CDirection CamDirection = Graphics->EngineDefaultCam->GetDirections();
-	
-	
 
 	if (GameInput->IsKeyDown(SDL_SCANCODE_W)) {
 		CameraInput += CamDirection.Forward;
@@ -164,13 +199,13 @@ void Game::Update()
 	if (GameInput->IsKeyDown(SDL_SCANCODE_T)) {
 		CameraInput += CamDirection.Up;
 	}
-	
+
 	Graphics->EngineDefaultCam->AddMovementInput(CameraInput);
 
 	if (GameInput->IsMouseButtonDown(MouseButtons::RIGHT)) {
 
-		Graphics->EngineDefaultCam->RotatePitch(-GameInput->MouseYDelta * GetFDeltaTime());
-		Graphics->EngineDefaultCam->RotateYaw(GameInput->MouseXDelta * GetFDeltaTime());
+		Graphics->EngineDefaultCam->RotatePitch(-GameInput->MouseYDelta);
+		Graphics->EngineDefaultCam->RotateYaw(GameInput->MouseXDelta);
 		GameInput->CursorToggle(true);
 	}
 	else {
@@ -179,11 +214,60 @@ void Game::Update()
 	if (GameInput->IsMouseButtonDown(MouseButtons::LEFT)) {
 		Graphics->EngineDefaultCam->ZoomFOV(10.0f);
 	}
+
+}
+
+void Game::Update()
+{
+	static double LastFrameTime = 0.0;
+	double CurrentFrameTime = static_cast<double>(SDL_GetTicks64());
+	double NewDeltaTime = CurrentFrameTime - LastFrameTime;
+	DeltaTime = NewDeltaTime / 1000.0;
+	LastFrameTime = CurrentFrameTime;
+
+
+	//CollectAnk->Transform.Rotation.z += 50.0f * GetFDeltaTime();
+	//Poly1->Transform.Location.x += 0.1 * GetFDeltaTime();
+
+
+
+	Graphics->EngineDefaultCam->Update();
+
+	CollisionPtr CamCol = Graphics->EngineDefaultCam->GetCameraCollision();
+	if (CollectAnk != nullptr && CamCol->IsOverLapping(*CollectAnk->GetCollision()))
+	{
+		RemoveModelFromGame(CollectAnk);
+	}
+
+	if (CollectScroll != nullptr && CamCol->IsOverLapping(*CollectScroll->GetCollision()))
+	{
+		RemoveModelFromGame(CollectScroll);
+	}
+
+	if (CollectStar != nullptr && CamCol->IsOverLapping(*CollectStar->GetCollision()))
+	{
+		RemoveModelFromGame(CollectStar);
+	}
 }
 
 void Game::Draw()
 {
+	Graphics->ClearGraphics();
+
 	Graphics->Draw();
+
+	CollisionPtr CamCol = Graphics->EngineDefaultCam->GetCameraCollision();
+
+	if (CollectAnk != nullptr && CamCol->IsOverLapping(*CollectAnk->GetCollision()))
+	{
+		CamCol->DebugDraw(Vector3(255.0f, 0.0f, 0.0f));
+	}
+	else
+	{
+		CamCol->DebugDraw(Vector3(255.0f));
+	}
+
+	Graphics->PresentGraphics();
 }
 
 void Game::CloseGame()

@@ -35,6 +35,8 @@ public:
 	TexturePtr DefaultEngineTexture;
 	MaterialPtr DefaultEngingeMaterial;
 
+	void RemoveModel(ModelPtr ModelToRemove);
+
 private:
 	SDL_Window* SdlWindow;
 	SDL_GLContext SdlGLContext;

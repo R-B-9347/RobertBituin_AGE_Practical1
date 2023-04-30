@@ -26,6 +26,10 @@ public:
 
 	const char* GetFilePath() const { return ModelFilePath; }
 
+	CollisionPtr GetCollision() const { return ModelCollision; }
+
+	CollisionPtr AddCollisionToModel(Vector3 Dimension, Vector3 Offset = Vector3(0.0f));
+
 private:
 	void FindAndImportSceneMeshes(aiNode* Node, const aiScene* Scene);
 	MeshPtr ConvertImportMeshToEngineMesh(aiMesh* importMesh, const aiScene* Scene);
@@ -37,4 +41,5 @@ private:
 	MaterialPtrStack MaterialStack;
 	Shaderptr ModelShader;
 	const char* ModelFilePath;
+	CollisionPtr ModelCollision;
 };

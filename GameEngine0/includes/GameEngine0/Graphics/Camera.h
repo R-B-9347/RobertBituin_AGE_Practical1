@@ -1,6 +1,9 @@
 #pragma once
 #include "GameEngine0/Math/Transformation.h"
 #include "glm/glm.hpp"
+#include "GameEngine0/Collisions/Collision.h"
+
+
 struct STCameraData {
 	float speed = 5.0f;
 	float FOV = 70.0f;
@@ -8,7 +11,7 @@ struct STCameraData {
 	float NearClip = 0.01f;
 	float Farclip = 1000.0f;
 
-	float LookSense = 25.0f;
+	float LookSense = 0.3f;
 };
 
 class Camera {
@@ -29,6 +32,11 @@ public:
 	void RotateYaw(float Amount);
 
 	void ZoomFOV(float Amount);
+
+	void Update();
+
+	CollisionPtr GetCameraCollision() const { return CameraCollision; }
+
 private:
 	void UpdateDirectionVectors();
 
@@ -36,5 +44,5 @@ private:
 	CTransform Transform;
 	CDirection Directions;
 	STCameraData CameraData;
-
+	CollisionPtr CameraCollision;
 };
